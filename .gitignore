@@ -1,0 +1,6 @@
+server/node_modules
+server/dist
+server/NOTES
+
+web/node_modules
+web/.next
