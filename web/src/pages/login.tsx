@@ -4,8 +4,10 @@ import {
   FormControl,
   Box,
   Button,
+  Link,
+  Flex,
 } from "@chakra-ui/react";
-
+import NextLink from 'next/link'
 import { Wrapper } from "../components/Wrapper";
 import { InputField } from "../components/InputField";
 import { useLoginMutation } from "../generated/graphql";
@@ -20,9 +22,9 @@ const Login: React.FC<{}> = ({}) => {
   return (
     <Wrapper variant="small">
       <Formik
-        initialValues={{ username: "", password: "" }}
+        initialValues={{ usernameOrEmail: "", password: "" }}
         onSubmit={async (values, { setErrors }) => {
-          const response = await login({options: values});
+          const response = await login(values);
           if (response.data?.login.errors) {
             setErrors(toErrorMap(response.data.login.errors));
           } else if (response.data?.login.user) {
@@ -34,9 +36,9 @@ const Login: React.FC<{}> = ({}) => {
           <Form>
             <FormControl>
               <InputField
-                name="username"
-                placeholder="username"
-                label="Username"
+                name="usernameOrEmail"
+                placeholder="username or email"
+                label="Username or email"
               />
               <Box mt={4}>
                 <InputField
@@ -46,9 +48,14 @@ const Login: React.FC<{}> = ({}) => {
                   type="password"
                 />
               </Box>
+              <Flex mt={2}>
+                <NextLink href="/forgot-password">
+                  <Link  ml="auto"href="/forgot-password">forgot password?</Link>
+                </NextLink>                
+              </Flex>
             </FormControl>
             <Button
-              mt={8}
+              mt={2}
               isLoading={isSubmitting}
               type="submit"
               colorScheme="teal"
